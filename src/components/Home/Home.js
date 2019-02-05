@@ -1,30 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
+import { Route, NavLink } from 'react-router-dom'
+import Topics from '../Topics/Topics'
+import Me from '../Me/Me'
 
 class Home extends Component {
-  state = {
-    topics: [],
-    type: 'all'
-  }
-  getTopics = type => {
-    const url = `https://cnodejs.org/api/v1/topics?tab=${type}`
-    axios.get(url).then(res => {
-      this.setState({ topics: res.data.data })
-    })
-  }
-  handelTab = type => {
-    console.log(type)
-    this.setState({
-      type: type
-    })
-    this.getTopics(type)
-  }
-  componentDidMount() {
-    const { type } = this.state
-    this.getTopics(type)
-  }
-
   render() {
     const navArr = [
       {
@@ -50,45 +30,39 @@ class Home extends Component {
     ]
     const nav = navArr.map(e => (
       <li key={e.type}>
-        <Btn
-          style={
-            this.state.type === e.type
-              ? {
-                  backgroundColor: '#80bd01',
-                  color: '#fff'
-                }
-              : {}
-          }
-          onClick={() => this.handelTab(e.type)}
+        <NavLink
+          to={`/${e.type === 'all' ? '' : e.type}`}
+          exact={e.type === 'all' ? true : false}
         >
           {e.txt}
-        </Btn>
+        </NavLink>
       </li>
     ))
-    const { topics } = this.state
-    const topic = topics.length ? (
-      <ul className="topics">
-        {topics.map(topic => (
-          <li key={topic.id}>{topic.title}</li>
-        ))}
-      </ul>
-    ) : (
-      <div>请稍等……</div>
-    )
     return (
-      <Wrap>
-        <nav>
-          <Nav>{nav}</Nav>
-        </nav>
-        {topic}
-      </Wrap>
+      <Bigbox>
+        <Wrap>
+          <nav>
+            <Nav>{nav}</Nav>
+          </nav>
+          <Route component={Topics} path="/" exact />
+          <Route component={Topics} path="/good" />
+          <Route component={Topics} path="/ask" />
+          <Route component={Topics} path="/share" />
+          <Route component={Topics} path="/job" />
+        </Wrap>
+        <Me />
+      </Bigbox>
     )
   }
 }
 
 export default Home
+const Bigbox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 const Wrap = styled.div`
-  width: 70%;
+  width: 78%;
   border-radius: 8px;
   background-color: #fff;
 `
@@ -103,12 +77,15 @@ const Nav = styled.ul`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   li {
-    color: #80bd01;
     margin-left: 20px;
   }
-`
-const Btn = styled.span`
-  padding: 2px 4px;
-  border-radius: 3px;
-  cursor: pointer;
+  li a {
+    color: #80bd01;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  li .active {
+    background-color: #80bd01;
+    color: #fff;
+  }
 `
