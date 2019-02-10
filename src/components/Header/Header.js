@@ -5,7 +5,7 @@ import axios from 'axios'
 
 class Header extends Component {
   state = {
-    token: '03a29e99-00d2-43f5-a74e-9efd65197acb',
+    token: '9948d556-1825-416f-934f-b3ce046403e3',
     userInfo: null
   }
   componentDidMount() {
