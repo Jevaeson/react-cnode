@@ -68,7 +68,7 @@ class Header extends Component {
           {userInfo ? (
             <div>
               <img src={userInfo.avatar_url} alt='' />
-              <button onClick={this.logout}>注销</button>
+              <button onClick={this.logout}>登出</button>
               <Link to='/topic/create'>发布话题</Link>
             </div>
           ) : (
